@@ -395,6 +395,18 @@ Add to your `Gemfile`:
 gem "rails_airtable_sync"
 ```
 
+```ruby
+gem 'rails_airtable_sync', git: 'git@github.com:formulate/rails_to_airtable.git'
+```
+
+Install the gem:
+
+```ruby
+bundle install
+```
+
+Find which models to sync:
+
 Run the migration:
 
 ```

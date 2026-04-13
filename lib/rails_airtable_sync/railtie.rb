@@ -4,7 +4,7 @@ module RailsAirtableSync
 
     # Load rake tasks
     rake_tasks do
-      load File.expand_path("../../tasks/airtable.rake", __dir__)
+      load File.expand_path("../tasks/airtable.rake", __dir__)
     end
 
     # Expose gem migration path so `bin/rails db:migrate` finds it
