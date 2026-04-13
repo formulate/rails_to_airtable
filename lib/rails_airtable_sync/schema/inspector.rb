@@ -27,6 +27,7 @@ module RailsAirtableSync
       def reload!
         @tables = nil
         tables
+        self
       end
 
       # Find a RemoteTable by name (case-sensitive).
