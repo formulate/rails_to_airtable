@@ -15,7 +15,7 @@ module RailsAirtableSync
       integer:              { airtable_type: "number",             options: { precision: 0 }, compatible: %w[number currency percent] },
       float:                { airtable_type: "number",             options: { precision: 8 }, compatible: %w[number currency percent] },
       decimal:              { airtable_type: "number",             options: { precision: 8 }, compatible: %w[number currency percent] },
-      boolean:              { airtable_type: "checkbox",           options: {},               compatible: %w[checkbox] },
+      boolean:              { airtable_type: "checkbox",           options: { color: "greenBright", icon: "check" }, compatible: %w[checkbox] },
       date:                 { airtable_type: "date",               options: { dateFormat: { name: "iso" } }, compatible: %w[date] },
       datetime:             { airtable_type: "dateTime",           options: { dateFormat: { name: "iso" }, timeFormat: { name: "24hour" }, timeZone: "utc" }, compatible: %w[dateTime] },
       email:                { airtable_type: "email",              options: {},               compatible: %w[email singleLineText] },
