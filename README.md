@@ -399,6 +399,11 @@ gem "rails_airtable_sync"
 gem 'rails_airtable_sync', git: 'git@github.com:formulate/rails_to_airtable.git'
 ```
 
+```bash
+export AIRTABLE_API_KEY="your_api_key_here"
+export AIRTABLE_BASE_ID="your_base_id_here"
+```
+
 Install the gem:
 
 ```ruby

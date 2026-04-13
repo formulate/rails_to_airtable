@@ -107,7 +107,7 @@ module RailsAirtableSync
 
       def create_table(table_name, model_config)
         initial_fields = model_config.field_mappings.map do |m|
-          TypeSystem::AirtableTypeMap.field_definition(m)
+          TypeSystem.field_definition(m)
         end
         @executor.create_table(table_name, fields: initial_fields)
         :created
@@ -121,13 +121,13 @@ module RailsAirtableSync
 
       def reconcile_field(mapping, remote_table, table_name)
         remote_field = remote_table&.field_by_name(mapping.airtable_field)
-        expected     = TypeSystem::AirtableTypeMap.for_type(mapping.type)
+        expected     = TypeSystem.for_type(mapping.type)
 
         if remote_field.nil?
           return create_field(mapping, remote_table, table_name)
         end
 
-        if TypeSystem::AirtableTypeMap.compatible?(mapping.type, remote_field.type)
+        if TypeSystem.compatible?(mapping.type, remote_field.type)
           outcome = maybe_update_field(mapping, remote_field, remote_table, table_name)
           @instrumentation.emit("airtable_sync.schema_reconciled",
                                 table: table_name, field: mapping.airtable_field,
