@@ -4,12 +4,8 @@ module RailsAirtableSync
   class ModelConfig
     attr_reader :model_class
     attr_reader :table_name
-    attr_reader :record_key        # Symbol – Rails PK attribute used as identity
-    attr_reader :external_id_field # String – name of the Airtable field holding record_key
     attr_reader :field_mappings    # Array<FieldMapping>
-    attr_reader :checksum_fields   # Array<Symbol> – attributes included in checksum
     attr_reader :scope_proc        # Proc or nil – AR scope for which records to sync
-    attr_reader :on_commit         # bool – enqueue sync in after_commit callback
 
     def initialize(model_class, table_name)
       @model_class       = model_class
@@ -28,12 +24,20 @@ module RailsAirtableSync
       @scope_proc = block
     end
 
-    def record_key(attr)
-      @record_key = attr.to_sym
+    def record_key(attr = nil)
+      if attr.nil?
+        @record_key
+      else
+        @record_key = attr.to_sym
+      end
     end
 
-    def external_id_field(name)
-      @external_id_field = name.to_s
+    def external_id_field(name = nil)
+      if name.nil?
+        @external_id_field
+      else
+        @external_id_field = name.to_s
+      end
     end
 
     def field(airtable_field, from:, type:, **options)
@@ -46,11 +50,19 @@ module RailsAirtableSync
     end
 
     def checksum_fields(*attrs)
-      @checksum_fields = attrs.map(&:to_sym)
+      if attrs.empty?
+        @checksum_fields
+      else
+        @checksum_fields = attrs.map(&:to_sym)
+      end
     end
 
-    def on_commit(enabled = true)
-      @on_commit = enabled
+    def on_commit(enabled = nil)
+      if enabled.nil?
+        @on_commit
+      else
+        @on_commit = enabled
+      end
     end
 
     # ─── Derived helpers ─────────────────────────────────────────────────────
