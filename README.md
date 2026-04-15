@@ -399,6 +399,7 @@ gem "rails_airtable_sync"
 gem 'rails_airtable_sync', git: 'git@github.com:formulate/rails_to_airtable.git'
 ```
 
+On Linux or Mac (you may add these variable in the credentials file):
 ```bash
 export AIRTABLE_API_KEY="your_api_key_here"
 export AIRTABLE_BASE_ID="your_base_id_here"
@@ -422,9 +423,33 @@ Configure in an initializer:
 
 ```ruby
 # config/initializers/airtable_sync.rb
-RailsAirtableSync.configure do |config|
-  config.api_key  = Rails.application.credentials.airtable_api_key
-  config.base_id  = ENV["AIRTABLE_BASE_ID"]
-  config.logger   = Rails.logger
+
+# Option 1
+# config/airtable.yml 
+# Load Airtable configuration from config/airtable.yml
+airtable_config_path = Rails.root.join('config', 'airtable.yml')
+
+# Option 2
+# Puts airtable_api_key and airtable_base_id  in the credentials with:
+# EDITOR="nano" bundle exec rails credentials:edit
+
+if File.exist?(airtable_config_path)
+  airtable_config = YAML.load_file(airtable_config_path, aliases: true).fetch(Rails.env, {})
+
+  RailsAirtableSync.configure do |config|
+    # Credentials - prefer environment variables, fall back to config file
+    config.api_key = Rails.application.credentials.airtable_api_key || ENV.fetch('AIRTABLE_API_KEY', airtable_config['api_key'])
+    config.base_id =  Rails.application.credentials.airtable_base_id || ENV.fetch('AIRTABLE_BASE_ID', airtable_config['base_id'] || airtable_config['base_key'])
+
+    # Optional settings (using defaults from the gem)
+    # config.timeout = 10
+    # config.max_retries = 3
+    # config.batch_size = 10
+    # config.auto_manage_schema = true
+    # config.auto_create_tables = true
+    # config.auto_create_fields = true
+    config.logger = Rails.logger
+  end
 end
+
 ```
