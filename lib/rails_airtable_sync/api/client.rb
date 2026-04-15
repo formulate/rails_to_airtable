@@ -153,7 +153,9 @@ module RailsAirtableSync
       end
 
       def records_url(table_name)
-        "#{RECORDS_BASE}/#{@base_id}/#{URI.encode_www_form_component(table_name)}"
+        # Use percent-encoding for path segments (spaces as %20, not +)
+        encoded_name = URI.encode_www_form_component(table_name).gsub("+", "%20")
+        "#{RECORDS_BASE}/#{@base_id}/#{encoded_name}"
       end
     end
   end
